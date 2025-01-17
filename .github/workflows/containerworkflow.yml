@@ -5,8 +5,6 @@ on:
 
 env:
   ACR_LOGON_SERVER: ${{ secrets.ACR_NAME }}.azurecr.io
-  IMAGE_NAME: ${{ secrets.ACR_NAME }}.azurecr.io/webapp:${{ github.sha }}
-  TAG: 'tag-placeholder'
 
 jobs:
     build-deploy-image:
@@ -15,16 +13,15 @@ jobs:
         
         steps:
 
-        - name: Test 1
-          run: echo $TAG
-
-
         - name: Set env
           run: |
-            D="$(date '+%Y%m%d.%H.%M')"
+            D="$(date '+%Y%m%d.%H%M')"
             echo "TAG=$(echo $D)" >> $GITHUB_ENV
         - name: Test 2
-          run: echo $TAG
+          run: echo $IMAGE_NAME
+          env:
+            IMAGE_NAME: ${{ secrets.ACR_NAME }}.azurecr.io/webapp:${{ env.TAG }}
+
 
     #     # checkout the repo
     #     - name: 'Checkout GitHub Action'
