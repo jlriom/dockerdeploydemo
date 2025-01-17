@@ -78,14 +78,14 @@ jobs:
       # - run: |
       #    kubectl create namespace ${{ env.NAMESPACE }} --dry-run -o json | kubectl apply -f -
     
-      # Create image pull secret for ACR
-      # - uses: azure/k8s-create-secret@v1
-      #   with:
-      #     container-registry-url: ${{ env.ACR_LOGON_SERVER }}
-      #     container-registry-username: ${{ secrets.SERVICE_PRINCIPAL_ID }}
-      #     container-registry-password: ${{ secrets.SERVICE_PRINCIPAL_PASSWORD }}
-      #     secret-name: ${{ secrets.AKS_SECRET }}
-      #     # namespace: ${{ env.NAMESPACE }}
+      Create image pull secret for ACR
+      - uses: azure/k8s-create-secret@v1
+        with:
+          container-registry-url: ${{ env.ACR_LOGON_SERVER }}
+          container-registry-username: ${{ secrets.SERVICE_PRINCIPAL_ID }}
+          container-registry-password: ${{ secrets.SERVICE_PRINCIPAL_PASSWORD }}
+          secret-name: ${{ secrets.AKS_SECRET }}
+          # namespace: ${{ env.NAMESPACE }}
     
       # Deploy app to AKS
       - uses: azure/k8s-deploy@v1
