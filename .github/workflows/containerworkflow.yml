@@ -5,6 +5,9 @@ on:
 
 env:
   ACR_LOGON_SERVER: ${{ secrets.ACR_NAME }}.azurecr.io
+  IMAGE_NAME: ${{ secrets.ACR_NAME }}.azurecr.io/webapp
+  IMAGE_NAME_LATEST_TAG: ${{ secrets.ACR_NAME }}.azurecr.io/webapp:latest
+  IMAGE_NAME: ${{ secrets.ACR_NAME }}.azurecr.io/webapp
 
 jobs:
     build-deploy-image:
@@ -18,24 +21,32 @@ jobs:
             D="$(date '+%Y%m%d.%H%M')"
             echo "TAG=$(echo $D)" >> $GITHUB_ENV
         - name: Test 2
-          run: echo $IMAGE_NAME
+          run: echo $IMAGE_NAME_WITH_TAG
           env:
-            IMAGE_NAME: ${{ secrets.ACR_NAME }}.azurecr.io/webapp:${{ env.TAG }}
+            IMAGE_NAME_WITH_TAG: ${{ env.IMAGE_NAME }}:${{ env.TAG }}
 
 
-    #     # checkout the repo
-    #     - name: 'Checkout GitHub Action'
-    #       uses: actions/checkout@master
+        # checkout the repo
+        - name: 'Checkout GitHub Action'
+          uses: actions/checkout@master
           
-    #     - name: 'Build and push image'
-    #       uses: azure/docker-login@v1
-    #       with:
-    #         login-server: ${{ env.ACR_LOGON_SERVER }}
-    #         username: ${{ secrets.SERVICE_PRINCIPAL_ID }}
-    #         password: ${{ secrets.SERVICE_PRINCIPAL_PASSWORD }}
+        - name: 'Build and push image'
+          uses: azure/docker-login@v1
+          with:
+            login-server: ${{ env.ACR_LOGON_SERVER }}
+            username: ${{ secrets.SERVICE_PRINCIPAL_ID }}
+            password: ${{ secrets.SERVICE_PRINCIPAL_PASSWORD }}
 
-    #     - run: docker build . -t ${{ env.IMAGE_NAME }}
-    #     - run: docker push ${{ env.IMAGE_NAME }}
+        - run: docker build . -t ${{ env.IMAGE_NAME_WITH_TAG }}
+          env:
+            IMAGE_NAME_WITH_TAG: ${{ env.IMAGE_NAME }}:${{ env.TAG }}
+        - run: docker push ${{ env.IMAGE_NAME_WITH_TAG }}
+          env:
+            IMAGE_NAME_WITH_TAG: ${{ env.IMAGE_NAME }}:${{ env.TAG }}
+
+        - run: docker build . -t ${{ env.IMAGE_NAME_LATEST_TAG }}
+        - run: docker push ${{ env.IMAGE_NAME_LATEST_TAG }}
+
 
     # deploy-to-aks:
       
