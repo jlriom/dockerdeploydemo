@@ -7,7 +7,6 @@ env:
   ACR_LOGON_SERVER: ${{ secrets.ACR_NAME }}.azurecr.io
   IMAGE_NAME: ${{ secrets.ACR_NAME }}.azurecr.io/webapp
   IMAGE_NAME_LATEST_TAG: ${{ secrets.ACR_NAME }}.azurecr.io/webapp:latest
-  IMAGE_NAME: ${{ secrets.ACR_NAME }}.azurecr.io/webapp
 
 jobs:
     build-deploy-image:
