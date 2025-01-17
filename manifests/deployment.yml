@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: webapp
-          image: acrnm01.azurecr.io/webapp:v1
+          image: jlacr01.azurecr.io/webapp:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
