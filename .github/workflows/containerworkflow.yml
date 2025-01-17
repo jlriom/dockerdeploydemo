@@ -15,14 +15,14 @@ jobs:
         
         steps:
 
-      - name: Test 1
-        run: echo $TAG
+        - name: Test 1
+          run: echo $TAG
 
 
-      - name: Set env
-        run: echo "TAG=$(echo date '+%Y%m%d.%H.%M')" >> $GITHUB_ENV
-      - name: Test 2
-        run: echo $TAG
+        - name: Set env
+          run: echo "TAG=$(echo date '+%Y%m%d.%H.%M')" >> $GITHUB_ENV
+        - name: Test 2
+          run: echo $TAG
 
     #     # checkout the repo
     #     - name: 'Checkout GitHub Action'
